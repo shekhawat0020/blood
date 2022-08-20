@@ -38,7 +38,7 @@
             <td>1234567890</td>
             <td>
             <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></button>
-            <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-print"></i></button>
+            <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></button>
                 <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
             </td>
             </tr>
@@ -62,7 +62,7 @@
             <td>1234567890</td>
             <td>
             <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></button>
-            <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-print"></i></button>
+            <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></button>
                 <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
             </td>
             </tr>
