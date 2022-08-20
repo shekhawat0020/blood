@@ -23,6 +23,15 @@
         .navbar-nav {
             margin-left: auto;
         }
+        footer{
+            background: #5fa2dd;
+            color: #fff;
+            text-align: center;
+            padding: 14px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
     </style>
 </head>
 <body>
@@ -81,7 +90,11 @@
         <main class="py-4">
             @yield('content')
         </main>
-        <footer style="background: #5fa2dd; color:#fff; text-align:center;padding: 14px;">
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <footer>
             <p>@ 2021 By Papaok</p>
         </footer>
     </div>
