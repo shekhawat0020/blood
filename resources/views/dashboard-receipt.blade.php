@@ -50,7 +50,7 @@
             <td>1234567890</td>
             <td>
             <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></button>
-            <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-print"></i></button>
+            <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></button>
                 <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
             </td>
             </tr>
@@ -92,6 +92,11 @@
         <p>Receipt Detail</p><hr/>
         <div class="row">
             <div class="form-group col-sm-6">
+                <label for="exampleInputEmail1">Receipt No *</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Receipt No ">
+            </div>
+
+            <div class="form-group col-sm-6">
                 <label for="exampleInputEmail1">Patient Name *</label>
                 <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter name">
             </div>
@@ -112,6 +117,23 @@
                 <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter Mobile Name">
             </div>
 
+
+            <div class="form-group col-sm-6">
+                <label for="exampleInputEmail1">Blood Group *</label>
+                <select class="form-control" id="exampleInputEmail1">
+                    <option value="">Select one</option>
+                    <option value="A-">A-</option>
+                    <option value="A+">A+</option>
+                    <option value="B-">B-</option>
+                    <option value="B+">B+</option>
+                    <option value="O-">O-</option>
+                    <option value="O+">O+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="AB+">AB+</option>
+                </select>
+            </div>
+
+
             <div class="form-group col-sm-6">
                 <label for="exampleInputEmail1">Component</label>
                 <select class="form-control" id="exampleInputEmail1">
@@ -130,9 +152,22 @@
             </div>
 
 
+            <div class="form-group col-sm-6">
+                <label for="exampleInputEmail1">Payment Mode</label>
+                <select class="form-control" id="exampleInputEmail1">
+                    <option value="">Select one</option>
+                    <option value="Cash">Cash</option>
+                    <option value="UPI">UPI</option>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="Credit">Credit</option>
+                    <option value="Cheque">Cheque</option>
+                </select>
+            </div>
+
+
             <div class="input-group  col-sm-6">
               <div class="input-group-prepend">
-                <span class="input-group-text">INR</span>
+                <span class="input-group-text">₹</span>
               </div>
               <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
               <div class="input-group-append">

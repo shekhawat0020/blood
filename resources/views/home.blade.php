@@ -76,7 +76,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header"><i class="fa fa-heartbeat"></i> {{ __('Blood Stock') }}</div>
+                <div class="card-header"><i class="fa fa-heartbeat"></i> {{ __('Blood Stock In Unit') }} (20,987)</div>
 
                 <div class="card-body">
                     
@@ -93,7 +93,7 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header"><i class="fa fa-users"></i>   {{ __('Donors') }}</div>
+                <div class="card-header"><i class="fa fa-users"></i>   {{ __('Donors') }} (1101)</div>
 
                 <div class="card-body donorsweget">                 
                      @include('dashboard-donors')                    
@@ -103,7 +103,7 @@
 
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header"><i class="fa fa-credit-card"></i> {{ __('Receipt') }}</div>
+                <div class="card-header"><i class="fa fa-credit-card"></i> {{ __('Receipt') }} (301)</div>
 
                 <div class="card-body">                 
                 @include('dashboard-receipt')              
