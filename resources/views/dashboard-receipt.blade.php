@@ -3,16 +3,16 @@
 
 <div class="row">
     <div class="col-sm-12">
-    <form>
-        
+    <form class="submitForm" action="{{route('get-receipt-form')}}" method="post">
+    @csrf
     <div class="input-group ">
-            <input type="text" class="form-control" placeholder="Recipient's Mobile No." aria-label="Donor Mobile No." aria-describedby="basic-addon2">
+            <input type="text" name="mobile_no" id="mobile_no"  class="form-control" placeholder="Recipient's Mobile No." aria-label="Donor Mobile No." aria-describedby="basic-addon2">
             <div class="input-group-append">
-            <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#exampleModal1">Create Receipt</button>
+            <button class="btn btn-outline-primary submitbutton" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing..." data-rest-text="Add Receipt">Add Receipt</button>
             </div>
         </div>
 
-    <form>
+</form>
 
         
     </div>
@@ -20,57 +20,18 @@
 <br/>
 <div class="row">
     <div class="col-sm-12">
-    <table class="table table-bordered">
+    <table class="table table-bordered data-table" id="receipt-table">
         <thead>
             <tr>
-            <th scope="col">No</th>
+            <th scope="col">Receipt No</th>
             <th scope="col">Patient Name</th>
             <th scope="col">Blood</th>
             <th scope="col">Mobile No</th>
+            <th scope="col">Date</th>
+            <th scope="col">Status</th>
             <th scope="col">Action</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>A+</td>
-            <td>1234567890</td>
-            <td>
-            <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></button>
-            <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></button>
-                <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-            </td>
-            </tr>
-
-            <tr>
-            <th scope="row">2</th>
-            <td>Mark</td>
-            <td>A+</td>
-            <td>1234567890</td>
-            <td>
-            <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></button>
-            <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></button>
-                <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-            </td>
-            </tr>
-
-            <tr>
-            <th scope="row">3</th>
-            <td>Mark</td>
-            <td>A+</td>
-            <td>1234567890</td>
-            <td>
-            <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></button>
-            <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></button>
-                <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-            </td>
-            </tr>
-
-
-            
-            
-        </tbody>
         </table>
 
     </div>
