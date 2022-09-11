@@ -7,8 +7,15 @@ use Illuminate\Http\Request;
 use App\Models\Donor;
 use App\Models\DonorHistory;
 use App\Models\Receipt;
+use App\Models\AppConfig;
+use App\Models\User;
 use Datatables;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\DonorHistoryExport;
+use App\Exports\ReceiptExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Auth;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -30,6 +37,17 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+    public function settings()
+    {
+        $config = AppConfig::first();
+        return view('settings', compact('config'));
+    }
+
+    public function users()
+    {
+        return view('users');
     }
 
    
@@ -451,9 +469,208 @@ class HomeController extends Controller
     }
 
     public function receiptPrint($id){
+
+       // return view('receipt-print');
         $data = array();
         $pdf = Pdf::loadView('receipt-print', $data);
         return $pdf->download('invoice.pdf');
+    }
+
+
+
+    public function donorReport(Request $request)
+    {
+        return Excel::download(new DonorHistoryExport, 'donor.xlsx');
+    }
+
+    public function receiptReport(Request $request)
+    {
+        return Excel::download(new ReceiptExport, 'receipt.xlsx');
+    }
+
+    public function settingsPriceUpdate(Request $request){
+        $validator = Validator::make($request->all(), [
+            'PRBC' => 'required|numeric|min:1',
+            'FFP' => 'required|numeric|min:1',
+            'RDP' => 'required|numeric|min:1',
+            'SDP' => 'required|numeric|min:1',
+            'Other' => 'required|numeric|min:1',
+            // 'link' => 'required'
+        ]);
+
+        if ($validator->fails())
+        {
+		   return response()->json([
+			'status' => false,
+			'errors' => $validator->errors()
+			]);
+		}
+
+
+        $price = AppConfig::find(1);
+        $price->PRBC_price = $request->PRBC;
+        $price->FFP_price = $request->FFP;
+        $price->RDP_price = $request->RDP;
+        $price->SDP_price = $request->SDP;
+        $price->Other_price = $request->Other;
+        $price->save();
+
+
+        return response()->json([
+            'status' => true,
+             'msg' => "Price Updated",              
+            ]);
+
+    }
+
+
+
+    public function settingsPasswordUpdate(Request $request){
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required',
+            'password' => 'required|confirmed|min:4',
+            // 'link' => 'required'
+        ]);
+
+        if ($validator->fails())
+        {
+		   return response()->json([
+			'status' => false,
+			'errors' => $validator->errors()
+			]);
+		}
+
+        if (!Hash::check($request['old_password'], Auth::user()->password)) {
+            return response()->json([
+                'status' => false,
+                'errors' => ['old_password' => array('Old Password not match')]
+                ]);
+       }
+
+
+        $user = User::find(Auth::user()->id);
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+
+        return response()->json([
+            'status' => true,
+             'msg' => "Password Updated",              
+            ]);
+
+    }
+
+
+
+    public function userAdd(Request $request){
+        $validator = Validator::make($request->all(), [
+            'username' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:4',
+            'role' => 'required',
+            // 'link' => 'required'
+        ]);
+
+        if ($validator->fails())
+        {
+		   return response()->json([
+			'status' => false,
+			'errors' => $validator->errors()
+			]);
+		}
+
+        
+
+        $user = new User();
+        $user->name = $request->username;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+
+        return response()->json([
+            'status' => true,
+            'resetform' => true,
+             'msg' => "User Created",              
+            ]);
+
+    }
+
+
+
+    public function userList(Request $request){
+        if ($request->ajax()) {
+            $data = User::latest()->where('id', '!=', 1)->get();
+         
+
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+
+                        $btn = '<button type="button"  class="btn btn-sm btn-primary loadmodal" data-url="'.route('user-edit', $row->id).'"><i class="fa fa-pencil"></i></button>';
+                        
+                        return $btn;
+                    })
+                    ->editColumn('status',function($row){
+                        return ($row->status)?"Active": "InActive";
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+    }
+
+
+    public function userEdit($id){
+        
+        $user = User::where('id', $id)->first();
+        $html  = view('user-edit', compact('user'))->render();
+        
+       
+
+        return response()->json([
+			'status' => true,
+             'showModal' => true,             
+             'modalData' => $html,             
+			]);
+
+
+
+    }
+
+
+
+    public function userUpdate(Request $request){
+        $validator = Validator::make($request->all(), [
+            'username' => 'required',
+            'email' => 'required|email|unique:users,email,'.$request->id,
+            'status' => 'required',
+            'role' => 'required',
+            // 'link' => 'required'
+        ]);
+
+        if ($validator->fails())
+        {
+		   return response()->json([
+			'status' => false,
+			'errors' => $validator->errors()
+			]);
+		}
+
+        
+
+        $user = User::find($request->id);
+        $user->name = $request->username;
+        $user->email = $request->email;
+        $user->status = $request->status;
+        $user->save();
+
+
+        return response()->json([
+            'status' => true,
+            'resetform' => false,
+             'msg' => "User Updated",              
+            ]);
+
     }
 
 
