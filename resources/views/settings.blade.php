@@ -11,6 +11,7 @@
 @section('content')
 <div class="container-xxl">
     <div class="row justify-content-center">
+    @can('Price Manager')
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header"><i class="fa fa-money"></i> {{ __('Price Managment') }}</div>
@@ -51,7 +52,7 @@
                 </div>
             </div>
         </div>
-
+@endcan
 
         <div class="col-md-6">
             <div class="card">

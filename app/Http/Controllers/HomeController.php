@@ -15,7 +15,10 @@ use App\Exports\DonorHistoryExport;
 use App\Exports\ReceiptExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Auth;
+use DB;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class HomeController extends Controller
 {
@@ -47,7 +50,10 @@ class HomeController extends Controller
 
     public function users()
     {
-        return view('users');
+        
+        $roles = Role::get();
+        $permission = Permission::get();
+        return view('users', compact('roles', 'permission'));
     }
 
    
@@ -60,10 +66,13 @@ class HomeController extends Controller
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-
-                        $btn = '<button type="button" class="btn btn-sm btn-primary loadmodal" data-url="'.route('donor-edit-form', $row->donor_id).'"><i class="fa fa-pencil"></i></button>
-                        <button type="button" class="btn btn-sm btn-danger deleterecord" data-url="'.route('donor-delete', $row->id).'"><i class="fa fa-trash"></i></button>';
-
+                        $btn = "";
+                        if(Auth()->user()->can('Donor Edit')){
+                        $btn .= '<button type="button" class="btn btn-sm btn-primary loadmodal" data-url="'.route('donor-edit-form', $row->donor_id).'"><i class="fa fa-pencil"></i></button>';
+                        }
+                        if(Auth()->user()->can('Donor Delete')){
+                        $btn .= '<button type="button" class="btn btn-sm btn-danger deleterecord" data-url="'.route('donor-delete', $row->id).'"><i class="fa fa-trash"></i></button>';
+                        }
                         return $btn;
                     })
                     ->editColumn('created_at',function($row){
@@ -83,9 +92,14 @@ class HomeController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
 
-                        $btn = '<a  class="btn btn-sm btn-primary" href="'.route('receipt-print', $row->id).'"><i class="fa fa-print"></i></a>';
+                        $btn = "";
+                        if(Auth()->user()->can('Receipt Print')){
+                        $btn .= '<a  class="btn btn-sm btn-primary" href="'.route('receipt-print', $row->id).'"><i class="fa fa-print"></i></a>';
+                        }
                         if($row->status == 'Created'){
+                            if(Auth()->user()->can('Receipt Cancel')){
                         $btn .= ' <button type="button" class="btn btn-sm btn-danger deleterecord" data-url="'.route('receipt-cancel', $row->id).'"><i class="fa fa-close"></i></button>';
+                            }
                         }
                         return $btn;
                     })
@@ -567,7 +581,7 @@ class HomeController extends Controller
             'username' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:4',
-            'role' => 'required',
+            'roles' => 'required',
             // 'link' => 'required'
         ]);
 
@@ -586,6 +600,8 @@ class HomeController extends Controller
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->save();
+
+        $user->assignRole($request->roles);
 
 
         return response()->json([
@@ -614,6 +630,9 @@ class HomeController extends Controller
                     ->editColumn('status',function($row){
                         return ($row->status)?"Active": "InActive";
                     })
+                    ->addColumn('role',  function ($user) {
+                        return $user->getRoleNames();
+                     })
                     ->rawColumns(['action'])
                     ->make(true);
         }
@@ -623,7 +642,9 @@ class HomeController extends Controller
     public function userEdit($id){
         
         $user = User::where('id', $id)->first();
-        $html  = view('user-edit', compact('user'))->render();
+        $userRole = $user->roles->pluck('id','name')->all();
+        $roles = Role::get();
+        $html  = view('user-edit', compact('user', 'userRole', 'roles'))->render();
         
        
 
@@ -644,7 +665,7 @@ class HomeController extends Controller
             'username' => 'required',
             'email' => 'required|email|unique:users,email,'.$request->id,
             'status' => 'required',
-            'role' => 'required',
+            'roles' => 'required',
             // 'link' => 'required'
         ]);
 
@@ -664,11 +685,120 @@ class HomeController extends Controller
         $user->status = $request->status;
         $user->save();
 
+        $user->assignRole($request->roles);
+
 
         return response()->json([
             'status' => true,
             'resetform' => false,
              'msg' => "User Updated",              
+            ]);
+
+    }
+
+
+
+    public function roleAdd(Request $request){
+        $validator = Validator::make($request->all(), [
+           
+            'name' => 'required|unique:roles,name',
+            'permission' => 'required',
+            // 'link' => 'required'
+        ]);
+
+        if ($validator->fails())
+        {
+		   return response()->json([
+			'status' => false,
+			'errors' => $validator->errors()
+			]);
+		}
+
+        
+
+        $role = Role::create(['name' => $request->input('name')]);
+        $role->syncPermissions($request->input('permission'));
+
+
+        return response()->json([
+            'status' => true,
+            'resetform' => true,
+             'msg' => "Role Created",              
+            ]);
+
+    }
+
+    public function roleList(Request $request){
+        if ($request->ajax()) {
+            $data = Role::latest()->get();
+         
+
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+
+                        $btn = '<button type="button"  class="btn btn-sm btn-primary loadmodal" data-url="'.route('role-edit', $row->id).'"><i class="fa fa-pencil"></i></button>';
+                        
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+    }
+
+
+    public function roleEdit($id){
+        
+        $role = Role::where('id', $id)->first();
+        $permission = Permission::get();
+        $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
+            ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
+            ->all();
+        $html  = view('role-edit', compact('role', 'permission', 'rolePermissions'))->render();
+        
+       
+
+        return response()->json([
+			'status' => true,
+             'showModal' => true,             
+             'modalData' => $html,             
+			]);
+
+
+
+    }
+
+
+
+    public function roleUpdate(Request $request){
+        $validator = Validator::make($request->all(), [
+           
+            'name' => 'required|unique:roles,name,'.$request->id,
+            'permission' => 'required',
+            // 'link' => 'required'
+        ]);
+
+        if ($validator->fails())
+        {
+		   return response()->json([
+			'status' => false,
+			'errors' => $validator->errors()
+			]);
+		}
+
+        
+
+        $role = Role::find($request->id);
+        $role->name = $request->name;
+        $role->save();
+
+        $role->syncPermissions($request->input('permission'));
+
+
+        return response()->json([
+            'status' => true,
+            'resetform' => false,
+             'msg' => "Role Updated",              
             ]);
 
     }

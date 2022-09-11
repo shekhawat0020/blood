@@ -1,10 +1,7 @@
 @extends('layouts.app')
 
 @section('style')
-<style>
-
-
-</style>
+<link rel="stylesheet" href="{{asset('/css/bootstrap-multiselect.min.css')}}" />
 
 @endsection
 
@@ -38,12 +35,11 @@
                         </div>
 
                         <div class="form-group col-sm-6">
-                            <label for="exampleInputEmail1">Role *</label>
-                            <select name="role" id ="role" class="form-control" >
-                                <option value="">Select one</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
+                            <label for="exampleInputEmail1">Role *</label><br/>
+                            <select name="roles[]" id ="roles" class="form-control multiselect" multiple>
+                                @foreach($roles as $p)
+                                <option value="{{$p->id}}">{{$p->name}}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -55,31 +51,95 @@
 
                         
                 </div>
-</div>
-<br/>
-<div class="row">
-    <div class="col-sm-12">
-    <table class="table table-bordered data-table" id="user-table">
-        <thead>
-            <tr>
-            
-            <th scope="col">UserName</th>
-            <th scope="col">Email</th>
-           <!-- <th scope="col">Role</th> -->
-            <th scope="col">Status</th>
-            <th scope="col">Action</th>
-            </tr>
-        </thead>  
-        </tbody>
-        </table>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-sm-12">
+                <table class="table table-bordered data-table" id="user-table">
+                    <thead>
+                        <tr>
+                        
+                        <th scope="col">UserName</th>
+                        <th scope="col">Email</th>
+                    <th scope="col">Role</th> 
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                        </tr>
+                    </thead>  
+                    </tbody>
+                    </table>
 
-    </div>
-</div>
-
-                    
                 </div>
             </div>
-        </div>
+
+                    
+         </div>
+     </div>
+    </div>
+
+
+
+
+    <div class="col-md-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-user"></i> {{ __('Roles') }}</div>
+
+                <div class="card-body">
+                    
+                <div class="row">
+                    <div class="col-sm-12">
+                    <form class="submitForm" action="{{route('role-add')}}" method="post">
+                        @csrf
+                        <div class="form-group col-sm-6">
+                            <label>Role *</label>
+                            <input name="name" id ="name" type="text" class="form-control">
+                        </div>
+                        
+
+                        <div class="form-group col-sm-6">
+                            <label for="exampleInputEmail1">Permission *</label><br/>
+                            <select  name="permission[]" id ="permission" class="form-control multiselect" multiple>
+                                @foreach($permission as $p)
+                                <option value="{{$p->id}}">{{$p->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-primary submitbutton" type="submit" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing..." data-rest-text="Add Role">Add Role</button>
+                        </div>
+
+                    </form>
+
+                        
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-sm-12">
+                <table class="table table-bordered data-table" id="role-table">
+                    <thead>
+                        <tr>
+                        
+                        <th scope="col">Role</th>
+                        <th scope="col">Action</th>
+                        </tr>
+                    </thead>  
+                    </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+                    
+         </div>
+     </div>
+    </div>
+
+
+
+
+
     </div>
 
 </div>
@@ -97,7 +157,12 @@
 
 
 @section('script')
+<script src="{{asset('/js/bootstrap-multiselect.js')}}"></script>
 <script>
+
+$(function(){
+  $('.multiselect').multiselect();
+});
  
  $(document).on('submit', '.submitForm', function(event){
   event.preventDefault();
@@ -157,7 +222,20 @@ $(function() {
         columns: [
             { data: 'name', name: 'name' },
             { data: 'email', name: 'email' },
+            { data: 'role', name: 'role' },
             { data: 'status', name: 'status' },
+            { data: 'action', name: 'action' }
+        ]
+    });
+});
+
+$(function() {
+    $('#role-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '{!! route('role-list') !!}',
+        columns: [
+            { data: 'name', name: 'name' },
             { data: 'action', name: 'action' }
         ]
     });
@@ -177,7 +255,7 @@ $(document).on('click', '.loadmodal', function(){
           if(data.status){
             $('#formModal').modal('show');
             $('#formModal').find('.modal-dialog').html(data.modalData);
-
+            $('.multiselectajax').multiselect();
           }else{
               
             errorMsg('Error', data.msg);

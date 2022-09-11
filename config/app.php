@@ -177,6 +177,7 @@ return [
 
         Yajra\Datatables\DatatablesServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
     ],
 

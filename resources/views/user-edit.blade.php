@@ -31,12 +31,11 @@
                         </div>
                        
                         <div class="form-group col-sm-6">
-                            <label for="exampleInputEmail1">Role *</label>
-                            <select name="role" id ="role" class="form-control" >
-                                <option value="">Select one</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
+                            <label for="exampleInputEmail1">Role *</label><br/>
+                            <select name="roles[]" id ="role" class=" multiselectajax" multiple>
+                              @foreach($roles as $role)
+                                <option @if(in_array($role->id, $userRole)) selected @endif value="{{$role->id}}">{{$role->name}}</option>
+                                @endforeach
                             </select>
                         </div>
             

@@ -1,6 +1,6 @@
 
 
-
+@can('Donor Add')
 <div class="row">
     <div class="col-sm-12">
     <form class="submitForm" action="{{route('get-donor-form')}}" method="post">
@@ -18,6 +18,7 @@
     </div>
 </div>
 <br/>
+@endcan
 <div class="row">
     <div class="col-sm-12">
     <table class="table table-bordered data-table" id="donor-table">
@@ -40,6 +41,7 @@
 <br/>
 <br/>
 <hr>
+@can('Donor Report')
 <h3>Download Report</h3>
 <form action="{{route('download-donor-report')}}" method="post">
 @csrf
@@ -60,5 +62,7 @@
 
 </div>
 </form>
+
+@endcan
 
 

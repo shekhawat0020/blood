@@ -1,6 +1,6 @@
 
 
-
+@can('Receipt Add')
 <div class="row">
     <div class="col-sm-12">
     <form class="submitForm" action="{{route('get-receipt-form')}}" method="post">
@@ -18,6 +18,7 @@
     </div>
 </div>
 <br/>
+@endcan
 <div class="row">
     <div class="col-sm-12">
     <table class="table table-bordered data-table" id="receipt-table">
@@ -43,6 +44,7 @@
 <br/>
 <br/>
 <hr>
+@can('Receipt Report')
 <h3>Download Report</h3>
 <form action="{{route('download-receipt-report')}}" method="post">
 @csrf
@@ -63,3 +65,4 @@
 
 </div>
 </form>
+@endcan
