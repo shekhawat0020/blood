@@ -39,7 +39,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $config = AppConfig::first();
+        return view('home', compact('config'));
     }
 
     public function settings()
@@ -356,7 +357,8 @@ class HomeController extends Controller
 		}
         $receipts = Receipt::where('mobile_no',$request->mobile_no)->get();
         $mobile = $request->mobile_no;
-        $html  = view('receipt-create', compact('mobile', 'receipts'))->render();
+        $config = AppConfig::first();
+        $html  = view('receipt-create', compact('mobile', 'receipts', 'config'))->render();
        
 
         return response()->json([
@@ -730,7 +732,7 @@ class HomeController extends Controller
 
     public function roleList(Request $request){
         if ($request->ajax()) {
-            $data = Role::latest()->get();
+            $data = Role::latest()->where('id', '!=', 1)->get();
          
 
             return Datatables::of($data)

@@ -309,6 +309,22 @@ function updateStock(data){
   $('.totalstock').html(data.totalstock);
 }
 
+$(document).on('keyup', '.receipt-amount', function(){
+  PRBC_price = $('#PRBC').val() * {{$config->PRBC_price}};
+  FFP_price = $('#FFP').val() * {{$config->FFP_price}};
+  RDP_price = $('#RDP').val() * {{$config->RDP_price}};
+  SDP_price = $('#SDP').val() * {{$config->SDP_price}};
+  Other_price = $('#Other').val() * {{$config->Other_price}};
+
+  $('.receiptprice').val(PRBC_price+FFP_price+RDP_price+SDP_price+Other_price);
+
+
+
+
+
+
+});
+
 </script>
 
 

@@ -58,18 +58,18 @@
                 <label for="exampleInputEmail1">Component</label>
                 <table class="table table-bordered">
                     <tr>
-                        <th>PRBC</th>
-                        <th>FFP</th>
-                        <th>RDP</th>
-                        <th>SDP</th>
-                        <th>Other</th>
+                        <th>PRBC (₹ {{$config->PRBC_price}})</th>
+                        <th>FFP (₹ {{$config->FFP_price}})</th>
+                        <th>RDP (₹ {{$config->RDP_price}})</th>
+                        <th>SDP (₹ {{$config->SDP_price}})</th>
+                        <th>Other (₹ {{$config->Other_price}})</th>
                     </tr>
                     <tr>
-                        <td><input type="number" name="PRBC" id="PRBC" min="0" value="0" class="form-control"></td>
-                        <td><input type="number" name="FFP" id="FFP" min="0" value="0" class="form-control"></td>
-                        <td><input type="number" name="RDP" id="RDP" min="0" value="0" class="form-control"></td>
-                        <td><input type="number" name="SDP" id="SDP" min="0" value="0" class="form-control"></td>
-                        <td><input type="number" name="Other" id="Other" min="0" value="0" class="form-control"></td>
+                        <td><input type="number" name="PRBC" id="PRBC" min="0" value="0" class="form-control receipt-amount"></td>
+                        <td><input type="number" name="FFP" id="FFP" min="0" value="0" class="form-control receipt-amount"></td>
+                        <td><input type="number" name="RDP" id="RDP" min="0" value="0" class="form-control receipt-amount"></td>
+                        <td><input type="number" name="SDP" id="SDP" min="0" value="0" class="form-control receipt-amount"></td>
+                        <td><input type="number" name="Other" id="Other" min="0" value="0" class="form-control receipt-amount"></td>
                     </tr>
                 </table>
                 
@@ -105,7 +105,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">₹</span>
               </div>
-              <input type="text" name="price" id="price" class="form-control" aria-label="Amount (to the nearest INR)">
+              <input type="text" name="price" id="price" class="form-control receiptprice" aria-label="Amount (to the nearest INR)">
               <div class="input-group-append">
                 <span class="input-group-text">.00</span>
               </div>
