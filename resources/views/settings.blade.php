@@ -66,17 +66,17 @@
                      
                   <div class="form-group col-sm-6">
                     <label for="exampleInputEmail1">Old Password *</label>
-                    <input type="number" name="old_password" id="old_password" class="form-control"  >
+                    <input type="password" name="old_password" id="old_password" class="form-control"  >
                   </div>
 
                   <div class="form-group col-sm-6">
                     <label for="exampleInputEmail1">New Password *</label>
-                    <input type="number" name="password" id="password" class="form-control"  >
+                    <input type="password" name="password" id="password" class="form-control"  >
                   </div>
 
                   <div class="form-group col-sm-6">
                     <label for="exampleInputEmail1">Confirm New Password *</label>
-                    <input type="number" name="password_confirmation" id="password_confirmation" class="form-control"  >
+                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control"  >
                   </div>
                       
                   </div>
