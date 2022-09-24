@@ -405,11 +405,11 @@ class HomeController extends Controller
 		}
         $quntity_in_unity = $request->PRBC+$request->FFP+$request->RDP+$request->SDP+$request->Other;
         if($quntity_in_unity > getBloodStock($request->blood_group)){
-            return response()->json([
-                'status' => false,
-                'errors' => ['blood_group' => array('Available stock for Blood Group '.$request->blood_group.' = '.getBloodStock($request->blood_group) )]
-                ]);
+          //  return response()->json([  'status' => false,  'errors' => ['blood_group' => array('Available stock for Blood Group '.$request->blood_group.' = '.getBloodStock($request->blood_group) )] ]);
         }
+
+        $config = AppConfig::first();
+
 
         $receipt = new Receipt();
         $receipt->receipt_no = $request->receipt_no;
@@ -422,6 +422,15 @@ class HomeController extends Controller
         $receipt->RDP = $request->RDP;
         $receipt->SDP = $request->SDP;
         $receipt->Other = $request->Other;
+
+        $receipt->PRBC_price = $config->PRBC_price;
+        $receipt->FFP_price = $config->FFP_price;
+        $receipt->RDP_price = $config->RDP_price;
+        $receipt->SDP_price = $config->SDP_price;
+        $receipt->Other_price = $config->Other_price;
+
+
+
         $receipt->bag_no = $request->bag_no;
         $receipt->issue_no = $request->issue_no;
         $receipt->quntity_in_unity = $quntity_in_unity;
@@ -487,7 +496,9 @@ class HomeController extends Controller
     public function receiptPrint($id){
 
        // return view('receipt-print');
-        $data = array();
+        $data = Receipt::where('id', $id)->first()->toArray();
+        
+       
         $pdf = Pdf::loadView('receipt-print', $data);
         return $pdf->download('invoice.pdf');
     }

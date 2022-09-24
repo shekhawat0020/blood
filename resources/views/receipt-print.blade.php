@@ -281,88 +281,144 @@ a {
         <td></td>
         <td class="container" width="100%">
             <div class="content">
+            
                 <table class="main" width="100%" cellpadding="0" cellspacing="0">
-                    <tbody><tr>
-                        <td class="content-wrap aligncenter">
-                            <table width="100%" cellpadding="0" cellspacing="0">
-                                <tbody>
+                    <tbody>
+                       
+                        <tr>
+                            <td class="content-wrap aligncenter">
+                                <table width="100%" cellpadding="0" cellspacing="0">
+                                    <tbody>
                                     <tr>
-                                    <td class="content-block">
-                                        <h2>Receipt</h2>
-                                        <hr/>
-                                    </td>
+                                        <td class="alignleft">
+                                        <img style="width: 150px;" src="{{url('/printlogo.png')}}">
+                                        </td>
                                     </tr>
-                                    
-                                <tr>
-                                    <td class="content-block">
-                                        <table class="invoice">
-                                            <tbody><tr>
-                                               
-                                                <td>
-                                                    <table width="100%" cellpadding="0" cellspacing="0">
-                                                        <tr>
-                                                        <td class="alignleft">
-                                                        Patient - Dev Singh<br>
-                                                        Hospital - JK Soni Hospital Jaipur<br>
-                                                        Recipient's Name - Ram Singh<br>
-                                                        Mobile No - 8764535536<br>
-                                                        Blood Group - AB+</td>
-                                                        <td class="alignright">Receipt No. #12345<br>June 01 2015</td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-
-                                            
-                                            <tr>
-                                                <td>
-                                                    <table class="invoice-items" cellpadding="0" cellspacing="0">
-                                                        <thead>
+                                        <tr>
+                                        <td class="content-block">
+                                            <h2>Receipt</h2>
+                                            <hr/>
+                                        </td>
+                                        </tr>
+                                        
+                                    <tr>
+                                        <td class="content-block">
+                                            <table class="invoice">
+                                                <tbody><tr>
+                                                
+                                                    <td>
+                                                        <table width="100%" cellpadding="0" cellspacing="0">
                                                             <tr>
-                                                                <th class="alignleft">Component </th>
-                                                                <th class="alignright">Price</th>
+                                                            <td class="alignleft">
+                                                            Patient - {{$patient_name}}<br>
+                                                            Hospital - {{$hospital_name}}<br>
+                                                            Recipient's Name - {{$recipient_name}}<br>
+                                                            Mobile No - {{$mobile_no}}<br>
+                                                            Blood Group - {{$blood_group}}</td>
+                                                            <td class="alignright">Receipt No. {{$receipt_no}}<br>{{date('d M Y', strtotime($created_at))}}</td>
                                                             </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr>
-                                                            <td>PRBC 1 Unit</td>
-                                                            <td class="alignright"><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> 20.00</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>FFP 1 Unit</td>
-                                                            <td class="alignright"><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> 20.00</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>RDP 1 Unit</td>
-                                                            <td class="alignright"><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> 20.00</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>SDP 1 Unit</td>
-                                                            <td class="alignright"><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> 20.00</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Other 1 Unit</td>
-                                                            <td class="alignright"><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> 20.00</td>
-                                                        </tr>
-                                                        <tr class="total">
-                                                            <td class="alignright" width="80%">Total</td>
-                                                            <td class="alignright"><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> 36.00</td>
-                                                        </tr>
-                                                    </tbody></table>
-                                                </td>
-                                            </tr>
-                                        </tbody></table>
-                                    </td>
-                                </tr>
-                               
-                                <tr>
-                                    <td class="content-block aligncenter">
-                                        Blood Lab
-                                    </td>
-                                </tr>
-                            </tbody></table>
-                        </td>
-                    </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <table class="invoice-items" cellpadding="0" cellspacing="0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="alignleft">Component </th>
+                                                                    <th class="alignleft">Unit </th>
+                                                                    <th class="alignleft">Unit Price </th>
+                                                                    <th class="alignright">Total</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>PRBC</td>
+                                                                <td> <span></span>{{$PRBC}}</td>
+                                                                <td> <span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> {{$PRBC_price}}</td>
+                                                                <td class="alignright">
+                                                                    <span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> 
+                                                                    {{$PRBC*$PRBC_price}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>FFP</td>
+                                                                <td> {{$FFP}}</td>
+                                                                <td> <span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> {{$FFP_price}}</td>
+                                                                <td class="alignright">
+                                                                    <span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> 
+                                                                    {{$FFP*$FFP_price}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>RDP</td>
+                                                                <td> {{$RDP}}</td>
+                                                                <td> <span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> {{$RDP_price}}</td>
+                                                                <td class="alignright">
+                                                                    <span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> 
+                                                                    {{$RDP*$RDP_price}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>SDP</td>
+                                                                <td> {{$SDP}}</td>
+                                                                <td> <span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> {{$SDP_price}}1</td>
+                                                                <td class="alignright">
+                                                                    <span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> 
+                                                                    {{$SDP*$SDP_price}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Other </td>
+                                                                <td> {{$Other}}</td>
+                                                                <td> <span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> {{$Other_price}}</td>
+                                                                <td class="alignright">
+                                                                    <span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> 
+                                                                    {{$Other*$Other_price}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="total">
+                                                                <td class="">Sub Total</td>
+                                                                <td class="">{{$PRBC+$FFP+$RDP+$SDP+$Other}}</td>
+                                                                <td class=""><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> 
+                                                                    {{$PRBC_price+$FFP_price+$RDP_price+$SDP_price+$Other_price}}</td>
+                                                                <td class="alignright"><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> 
+                                                                {{($PRBC*$PRBC_price)+($FFP*$FFP_price)+($RDP*$RDP_price)+($SDP*$SDP_price)+($Other*$Other_price)}}
+                                                            </td>
+                                                            </tr>
+                                                            <tr class="total">
+                                                                <td class="">Discount</td>
+                                                                <td class=""></td>
+                                                                <td class=""></td>
+                                                                <td class="alignright"><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> 
+                                                                {{(($PRBC*$PRBC_price)+($FFP*$FFP_price)+($RDP*$RDP_price)+($SDP*$SDP_price)+($Other*$Other_price))-$price}}
+                                                            </td>
+                                                            </tr>
+                                                            <tr class="total">
+                                                                <td class="">Total</td>
+                                                                <td class=""></td>
+                                                                <td class=""></td>
+                                                                <td class="alignright"><span style="font-family: DejaVu Sans; sans-serif;">&#8377;</span> 
+                                                            {{$price}}
+                                                            </td>
+                                                            </tr>
+                                                        </tbody></table>
+                                                    </td>
+                                                </tr>
+                                            </tbody></table>
+                                        </td>
+                                    </tr>
+                                
+                                    <tr>
+                                        <td class="content-block aligncenter">
+                                            Blood Lab
+                                        </td>
+                                    </tr>
+                                </tbody></table>
+                            </td>
+                        </tr>
                 </tbody></table>
                </div>
         </td>

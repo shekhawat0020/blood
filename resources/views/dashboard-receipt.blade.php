@@ -2,7 +2,7 @@
 
 @can('Receipt Add')
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-6">
     <form class="submitForm" action="{{route('get-receipt-form')}}" method="post">
     @csrf
     <div class="input-group ">

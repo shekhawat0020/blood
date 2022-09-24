@@ -91,7 +91,7 @@
     <br/>
 
     <div class="row justify-content-center">
-        <div class="col-md-6">
+      {{--  <div class="col-md-6">
             <div class="card">
                 <div class="card-header"><i class="fa fa-users"></i>   {{ __('Donors') }} </div>
 
@@ -100,8 +100,9 @@
                 </div>
             </div>
         </div>
+        --}}
 
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header"><i class="fa fa-credit-card"></i> {{ __('Receipt') }}</div>
 
